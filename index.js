@@ -3,21 +3,31 @@ log = console.log.bind(console);
 
 module.exports = assert;
 
-assert.str = str;
-assert.obj = obj;
-assert.arr = arr;
+assert.str = string;
+assert.string = string;
+assert.obj = object;
+assert.object = object;
+assert.arr = array;
+assert.array = array;
 assert.map = map;
 assert.set = set;
-assert.num = num;
-assert.int = int;
+assert.num = number;
+assert.number = number;
+assert.int = integer;
+assert.integer = integer;
 
-str.nonempty = _nonempty;
-obj.nonempty = _nonempty;
-arr.nonempty = _nonempty;
+string.nonempty = _nonempty;
+string.none = _nonempty;
+object.nonempty = _nonempty;
+object.none= _nonempty;
+array.nonempty = _nonempty;
+array.none= _nonempty;
 map.nonempty = _nonempty;
+map.none= _nonempty;
 set.nonempty = _nonempty;
+set.none= _nonempty;
 
-function str(v, msg, nonempty) {
+function string(v, msg, nonempty) {
     if (typeof v != 'string') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty string' : v + ' is string';
@@ -29,7 +39,7 @@ function str(v, msg, nonempty) {
             {message: msg, stackStartFunction: arguments.callee});
 }
 
-function obj(v, msg, nonempty) {
+function object(v, msg, nonempty) {
     if (_withoutConstructor(v) || v.constructor.name != 'Object') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty object' : v + ' is object';
@@ -42,7 +52,7 @@ function obj(v, msg, nonempty) {
             {message: msg, stackStartFunction: arguments.callee});
 }
 
-function arr(v, msg, nonempty) {
+function array(v, msg, nonempty) {
     if (_withoutConstructor(v) || v.constructor.name != 'Array') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty array' : v + ' is array';
@@ -78,7 +88,7 @@ function set(v, msg, nonempty) {
             {message: msg, stackStartFunction: arguments.callee});
 }
 
-function num(v, msg) {
+function number(v, msg) {
     if (typeof v != 'number' ||
             v.toString() == 'NaN' ||
             v.toString() == 'Infinity' ||
@@ -90,7 +100,7 @@ function num(v, msg) {
     }
 }
 
-function int(v, msg) {
+function integer(v, msg) {
     if (typeof v != 'number' ||
             v.toString() == 'NaN' ||
             v.toString() == 'Infinity' ||
