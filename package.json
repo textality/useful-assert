@@ -1,0 +1,29 @@
+{
+  "name": "useful-assert",
+  "version": "1.0.0",
+  "description": "Extends the native Node asserts by useful methods",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/tape test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/textality/useful-assert.git"
+  },
+  "keywords": [
+    "assert",
+    "asserts"
+  ],
+  "author": "textality",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/textality/useful-assert/issues"
+  },
+  "homepage": "https://github.com/textality/useful-assert#readme",
+  "devDependencies": {
+    "tape": "^4.6.0"
+  }
+}
