@@ -8,6 +8,7 @@ var map = assert.map;
 var set = assert.set;
 var num = assert.num;
 var int = assert.int;
+var undef = assert.undef;
 
 test('Test assert.str', function(t) {
     t.plan(9);
@@ -112,4 +113,11 @@ test('Test assert.int', function(t) {
     t.equal(int(-1), undefined, '-1 is integer');
     t.equal(int(0), undefined, '0 is integer');
     t.throws(int.bind(null, 0.3, 'Custom message'), /^AssertionError: Custom message/);
+});
+
+test('Test assert.undef', function(t) {
+    t.plan(3);
+    t.throws(undef, /^Error: missing required argument "v"/, 'throws error when arguments is not received');
+    t.equal(undef(undefined), undefined, 'undefined is undefined');
+    t.throws(undef.bind(null, 'asd', 'Custom message'), /^AssertionError: Custom message/, 'test custom message for undef');
 });

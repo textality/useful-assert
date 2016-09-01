@@ -15,6 +15,8 @@ assert.num = number;
 assert.number = number;
 assert.int = integer;
 assert.integer = integer;
+assert.undefined = undefined_;
+assert.undef = undefined_;
 
 string.nonempty = _nonempty;
 string.none = _nonempty;
@@ -26,6 +28,14 @@ map.nonempty = _nonempty;
 map.none= _nonempty;
 set.nonempty = _nonempty;
 set.none= _nonempty;
+
+function _withoutConstructor(v) {
+    if (v === undefined || v === null) return true;
+}
+
+function _nonempty(v, msg) {
+    this(v, msg, true);
+}
 
 function string(v, msg, nonempty) {
     if (typeof v != 'string') {
@@ -113,10 +123,12 @@ function integer(v, msg) {
     }
 }
 
-function _withoutConstructor(v) {
-    if (v === undefined || v === null) return true;
-}
-
-function _nonempty(v, msg) {
-    this(v, msg, true);
+function undefined_(v, msg) {
+  if (arguments.length == 0) throw new Error(
+      'missing required argument "v"!');
+  if (v !== undefined) {
+    msg = msg ? msg : v + ' is undefined';
+    throw new assert.AssertionError(
+        {message: msg, stackStartFunction: arguments.callee});
+  }
 }

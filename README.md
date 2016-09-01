@@ -24,6 +24,7 @@ Note: native methods also available
 * *assert.set.nonempty*
 * *assert.number*
 * *assert.integer*
+* *assert.undefined*
 
 ### shortcuts
 * *assert.str*
@@ -38,6 +39,7 @@ Note: native methods also available
 * *assert.set.none*
 * *assert.num*
 * *assert.int*
+* *assert.undef*
 
 ### example
 ```javascript
