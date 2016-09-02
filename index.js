@@ -125,18 +125,18 @@ function integer(v, msg) {
 }
 
 function undefined_(v, msg) {
-  if (arguments.length == 0) throw new Error(
-      'missing required argument "v"!');
-  if (v !== undefined) {
-    msg = msg ? msg : v + ' is undefined';
-    throw new assert.AssertionError(
-        {message: msg, stackStartFunction: arguments.callee});
-  }
+    if (arguments.length == 0) throw new Error(
+        'missing required argument "v"!');
+    if (v !== undefined) {
+      msg = msg ? msg : v + ' is undefined';
+      throw new assert.AssertionError(
+          {message: msg, stackStartFunction: arguments.callee});
+    }
 }
 
 function true_(v, msg) {
-  if (bool(v)) return;
-  msg = msg ? msg : v + ' is true';
-  throw new assert.AssertionError(
-      {message: msg, stackStartFunction: arguments.callee}); 
+    if (bool(v)) return;
+    msg = msg ? msg : v + ' is true';
+    throw new assert.AssertionError(
+        {message: msg, stackStartFunction: arguments.callee}); 
 }
