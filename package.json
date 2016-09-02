@@ -25,5 +25,8 @@
   "homepage": "https://github.com/textality/useful-assert#readme",
   "devDependencies": {
     "tape": "^4.6.0"
+  },
+  "dependencies": {
+    "true-bool": "^1.0.2"
   }
 }

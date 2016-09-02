@@ -121,3 +121,27 @@ test('Test assert.undef', function(t) {
     t.equal(undef(undefined), undefined, 'undefined is undefined');
     t.throws(undef.bind(null, 'asd', 'Custom message'), /^AssertionError: Custom message/, 'test custom message for undef');
 });
+
+test('Test assert.true', function(t) {
+    t.plan(20);
+    t.throws(assert.true, /^AssertionError: undefined is true/, 'throws ..undefined is true');
+    t.throws(assert.true.bind(null, false), /^AssertionError: false is true/, 'throws ..false is true');
+    t.throws(assert.true.bind(null, null), /^AssertionError: null is true/, 'throws ..null is true');
+    t.throws(assert.true.bind(null, 0), /^AssertionError: 0 is true/, 'throws ..0 is true');
+    t.throws(assert.true.bind(null, NaN), /^AssertionError: NaN is true/, 'throws ..NaN is true');
+    t.throws(assert.true.bind(null, ''), /^AssertionError:  is true/, 'throws ..  is true, for empty string');
+    t.throws(assert.true.bind(null, []), /^AssertionError:  is true/, 'throws ..  is true, for empty array');
+    t.throws(assert.true.bind(null, {}), /^AssertionError: \[object Object\] is true/, 'throws ..{} is true');
+    t.throws(assert.true.bind(null, new Map()), /^AssertionError: \[object Map\] is true/, 'throws ..false is true');
+    t.throws(assert.true.bind(null, new Set()), /^AssertionError: \[object Set\] is true/, 'throws ..Set{} is true');
+    t.equal(assert.true(true), undefined, 'true is true');
+    t.equal(assert.true(1), undefined, '1 is true');
+    t.equal(assert.true(Infinity), undefined, 'Infinity is true');
+    t.equal(assert.true(-Infinity), undefined, '-Infinity is true');
+    t.equal(assert.true('asd'), undefined, '"asd" is true');
+    t.equal(assert.true([1,2,3]), undefined, '[1,2,3] is true');
+    t.equal(assert.true({'foo': 'bar'}), undefined, '{"foo": "bar"} is true');
+    t.equal(assert.true(new Map([['foo', 'bar']])), undefined, 'Map {"foo": "bar"} is true');
+    t.equal(assert.true(new Set([1,2,3])), undefined, 'Set {1,2,3} is true');
+    t.throws(assert.true.bind(null, false, 'Custom message'), /^AssertionError: Custom message/, 'test custom message for assert.true');
+});

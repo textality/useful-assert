@@ -1,5 +1,5 @@
 var assert = require('assert');
-log = console.log.bind(console);
+var bool = require('true-bool');
 
 module.exports = assert;
 
@@ -17,6 +17,7 @@ assert.int = integer;
 assert.integer = integer;
 assert.undefined = undefined_;
 assert.undef = undefined_;
+assert.true = true_;
 
 string.nonempty = _nonempty;
 string.none = _nonempty;
@@ -131,4 +132,11 @@ function undefined_(v, msg) {
     throw new assert.AssertionError(
         {message: msg, stackStartFunction: arguments.callee});
   }
+}
+
+function true_(v, msg) {
+  if (bool(v)) return;
+  msg = msg ? msg : v + ' is true';
+  throw new assert.AssertionError(
+      {message: msg, stackStartFunction: arguments.callee}); 
 }
