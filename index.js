@@ -18,6 +18,8 @@ assert.integer = integer;
 assert.undefined = undefined_;
 assert.undef = undefined_;
 assert.true = true_;
+assert.isParent = isParent;
+assert.isparent = isParent;
 
 string.nonempty = _nonempty;
 string.none = _nonempty;
@@ -139,4 +141,43 @@ function true_(v, msg) {
     msg = msg ? msg : v + ' is true';
     throw new assert.AssertionError(
         {message: msg, stackStartFunction: arguments.callee}); 
+}
+
+function isParent(parent, obj, msg) {
+    /**
+     * Asserts that <parent> is parent of <obj>. That's
+     * <obj> instanceof <parent>, or <parent>.isPrototypeOf(<obj>)
+     *
+     * @param {Object} parent
+     * @param {Object} obj
+     * @param {string} [msg]
+     *
+     * @throws {Error} Missing required arguments: parent, obj
+     * @throws {Error} Missing required argument: obj
+     * @throws {Error} parent must be a object or function
+     * @throws {Error} obj must be a object or function
+     * @throws {AssertionError} [object Object] is parent of [object Object]
+     */
+    if (arguments.length == 0) {
+        throw new Error('Missing required arguments: parent, obj');
+    } else if (arguments.length == 1) {
+        throw new Error('Missing required argument: obj');
+    } else if (parent === null ||
+               (typeof parent != 'object' && typeof parent != 'function')) {
+        throw new Error('parent must be a object or function');
+    } else if (obj === null ||
+               (typeof obj != 'object' && typeof obj != 'function')) {
+        throw new Error('obj must be a object or function');
+    }
+    msg = msg ?
+          msg :
+          (Object.prototype.toString.call(parent) + ' is parent of ' +
+           Object.prototype.toString.call(obj));
+    if (typeof parent == 'function') {
+        if (obj instanceof parent) return;
+    } else {
+        if (Object.prototype.isPrototypeOf.call(parent, obj)) return;
+    }
+    throw new assert.AssertionError(
+            {message: msg, stackStartFunction: arguments.callee});
 }

@@ -9,6 +9,7 @@ var set = assert.set;
 var num = assert.num;
 var int = assert.int;
 var undef = assert.undef;
+var isparent = assert.isparent;
 
 test('Test assert.str', function(t) {
     t.plan(9);
@@ -144,4 +145,42 @@ test('Test assert.true', function(t) {
     t.equal(assert.true(new Map([['foo', 'bar']])), undefined, 'Map {"foo": "bar"} is true');
     t.equal(assert.true(new Set([1,2,3])), undefined, 'Set {1,2,3} is true');
     t.throws(assert.true.bind(null, false, 'Custom message'), /^AssertionError: Custom message/, 'test custom message for assert.true');
+});
+
+test('Test assert.isparent', function(t) {
+    t.plan(10);
+    t.throws(isparent, /^Error: Missing required arguments: parent, obj/,
+        'throws error if the method was called without required arguments');
+    t.throws(isparent.bind(null, {}), /^Error: Missing required argument: obj/,
+        'throws error if the method was called without required argument obj');
+    t.throws(isparent.bind(null, 'asd', {}), /^Error: parent must be a object or function/,
+        'throws error if parent argument is not object or function');
+    t.throws(isparent.bind(null, {}, 'asd'), /^Error: obj must be a object or function/,
+        'throws error if obj argument is not object or function');
+    t.throws(isparent.bind(null, {}, {}), /^AssertionError: \[object Object\] is parent of \[object Object\]/,
+        'throws ..{} is parent of {}');
+    t.equal(function() {
+        function User() {};
+        var user = new User();
+        return isparent(User, user);
+    }(), undefined, 'User is parent of user(instanceof case)');
+    t.equal(function() {
+        var User = {};
+        var user = Object.create(User);
+        return isparent(User, user);
+    }(), undefined, 'User is parent of user(isPrototypeOf case)');
+    t.equal(function() {
+        var Human = {};
+        function User() {};
+        User.prototype.__proto__ = Human;
+        var user = new User();
+        return isparent(Human, user);
+    }(), undefined, 'Human is parent of user(isPrototypeOf inderect case)');
+    t.equal(function() {
+        var User = Object.create(null);
+        var user = {};
+        user.__proto__ = User;
+        return isparent(User, user);
+    }(), undefined, 'User is parent of user(isPrototypeOf inderect case, when User is not inherit of Object)');
+    t.throws(isparent.bind(null, {}, {}, 'Custom message'), /^AssertionError: Custom message/, 'test custom message for assert.isparent');
 });
