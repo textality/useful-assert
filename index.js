@@ -89,7 +89,7 @@ function string(v, msg, nonempty) {
         if (!msg) msg = nonempty ? v + ' is non-empty string' : v + ' is string';
     } else if (nonempty && !v) {
         fail = true;
-        msg = msg ? msg : '"" is non-empty string';
+        msg = msg ? msg : '\'\' is non-empty string';
     }
     if (fail) throw new assert.AssertionError(
             {message: msg, stackStartFunction: arguments.callee});
@@ -149,7 +149,7 @@ function number(v, msg) {
             v.toString() == 'NaN' ||
             v.toString() == 'Infinity' ||
             v.toString() == '-Infinity') {
-        if (typeof v == 'string') v = '"' + v + '"';
+        if (typeof v == 'string') v = '\'' + v + '\'';
         msg = msg ? msg : v + ' is number';
         throw new assert.AssertionError(
                 {message: msg, stackStartFunction: arguments.callee});
@@ -162,7 +162,7 @@ function integer(v, msg) {
             v.toString() == 'Infinity' ||
             v.toString() == '-Infinity' ||
             v % 1 != 0) {
-        if (typeof v == 'string') v = '"' + v + '"';
+        if (typeof v == 'string') v = '\'' + v + '\'';
         msg = msg ? msg : v + ' is integer';
         throw new assert.AssertionError(
                 {message: msg, stackStartFunction: arguments.callee});
@@ -171,7 +171,7 @@ function integer(v, msg) {
 
 function undefined_(v, msg) {
     if (arguments.length == 0) throw new Error(
-        'missing required argument "v"!');
+        'missing required argument \'v\'!');
     if (v !== undefined) {
       msg = msg ? msg : v + ' is undefined';
       throw new assert.AssertionError(

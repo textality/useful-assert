@@ -55,8 +55,8 @@ assert.ok(true); // Native method "ok"
 // assert.string
 assert.str(5); // Throws AssertionError: 5 is non-empty string
 assert.str('');
-assert.str.nonempty(''); // Throws AssertionError: "" is non-empty string
-assert.str.none(''); // Throws AssertionError: "" is non-empty string
+assert.str.nonempty(''); // Throws AssertionError: '' is non-empty string
+assert.str.none(''); // Throws AssertionError: '' is non-empty string
 assert.str.none('foo');
 
 // assert.object
