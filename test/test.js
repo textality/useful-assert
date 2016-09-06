@@ -10,6 +10,7 @@ var num = assert.num;
 var int = assert.int;
 var undef = assert.undef;
 var isparent = assert.isparent;
+var any = assert.any;
 
 test('Test assert.str', function(t) {
     t.plan(9);
@@ -183,4 +184,50 @@ test('Test assert.isparent', function(t) {
         return isparent(User, user);
     }(), undefined, 'User is parent of user(isPrototypeOf inderect case, when User is not inherit of Object)');
     t.throws(isparent.bind(null, {}, {}, 'Custom message'), /^AssertionError: Custom message/, 'test custom message for assert.isparent');
+});
+
+test('Test assert.any', function(t) {
+    t.plan(19);
+    t.throws(any, /^Error: Missing required argument: assert method/,
+            'throws error if the method was called without required arguments');
+    t.throws(any.bind(null, 'asd'), /^Error: First argument must be a one of assert methods/,
+            'throws error if the first argument is not function');
+    t.throws(any.bind(null, Function.bind(null, 'asd')), /^Error: First argument must be a one of assert methods/,
+            'throws error if the first argument is not a one of assert methods(bound method)');
+    t.throws(any.bind(null, Function, 'asd'), /^Error: First argument must be a one of assert methods/,
+            'throws error if the first argument is not a one of assert methods(non-bound method)');
+    t.throws(any.bind(null, assert.ok), /^Error: Arguments must be present, when is non-bound methods are used/,
+           'throws error if missing arguments and non-bound methods are used.'); 
+    t.throws(any.bind(null, assert.ok.bind(null, true), str),
+            /^Error: Arguments must be present, when is non-bound methods are used/,
+           'throws error if missing arguments and non-bound methods are used(bound + non-bound).'); 
+    t.throws(any.bind(null, str, assert.ok, false),
+            /^AssertionError: false is string; false == true/, ('throws AssertionError: ' +
+                'false is string; false == true(non-bound methods)'));
+    t.equal(any(str, assert.ok, true), undefined, ('test non-bound assert methods, when one of ' +
+                'these is successful'));
+    t.equal(any(str, assert.ok, 'asd'), undefined, ('test non-bound assert methods, when all of ' +
+                'these is successful'));
+    t.throws(any.bind(null, str.bind(null, 2), assert.ok.bind(null, false)),
+            /^AssertionError: 2 is string; false == true/, ('throws AssertionError: ', +
+                '2 is string; false == true(bound methods)'));
+    t.equal(any(str.bind(null, 'asd'), assert.ok.bind(null, false)), undefined, ('test bound assert methods, ' +
+                'when one of these is successful'));
+    t.equal(any(str.bind(null, 'asd'), assert.ok.bind(null, true)), undefined, ('test bound assert methods, ' +
+                'when all of these is successful'));
+    t.throws(any.bind(null, str, assert.ok.bind(null, false), 2), /^AssertionError: 2 is string; false == true/,
+            'throws AssertionError: 2 is string; false == true (bound + non-bound methods)');
+    t.equal(any(str, assert.ok.bind(null, false), 'asd'), undefined, ('test bound + non-bound assert methods, ' +
+                'when one of these is successful'));
+    t.equal(any(str.bind(null, 'asd'), assert.ok, true), undefined, ('test bound + non-bound assert methods, ' +
+                'when all of these is successful'));
+    t.throws(any.bind(null, str, assert.ok.bind(null, false), 2, new assert.CustomMessage('Custom message')),
+            /^AssertionError: Custom message/,
+            'test custom message');
+    t.throws(any.bind(null, str.bind(null, 2, 'Custom message'), assert.ok, false),
+            /^AssertionError: Custom message; false == true/, 'test methods-level custom message');
+    t.throws(any.bind(null, str.none.bind(null, '', 'Custom message'), num, ''),
+            /^AssertionError: Custom message; "" is number/,
+            'test assert.<method>.none whith methods-level custom message');
+    t.equal(any(str.none, undef, num, 'asd'), undefined, 'test assert.<method>.none whith assert.any');
 });

@@ -103,6 +103,12 @@ Foo = {};
 foo = Object.create(Foo);
 assert.isparent(Foo, foo);
 
+// assert.any
+assert.any(assert.str, assert.array.nonempty, [1, 2, 3]);
+assert.any(assert.str.none, assert.num, assert.ok, ''); // AssertionError: '' is non-empty string; '' is number; '' == true
+assert.any(assert.num, assert.array, 'asd', new assert.CustomMessage('Custom message')); // AssertionError: Custom message
+assert.any(assert.num, assert.str.none.bind(null, '', 'Custom message'), false); // AssertionError: false is number; Custom message
+
 // custom assertion error message
 assert.true(false, 'Custom message'); // Throws AssertionError: Custom message
 assert.isparent({}, {}, 'Custom message'); // Throws AssertionError: Custom message
