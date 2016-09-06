@@ -231,3 +231,15 @@ test('Test assert.any', function(t) {
             'test assert.<method>.none whith methods-level custom message');
     t.equal(any(str.none, undef, num, 'asd'), undefined, 'test assert.<method>.none whith assert.any');
 });
+
+test('Test assert.isAssertMethod', function(t) {
+    t.plan(5);
+    t.equal(assert.isAssertMethod(assert.ok), true, 'Test isAssertMethod with native assert method');
+    t.equal(assert.isAssertMethod(assert.str), true, 'Test isAssertMethod with assert method');
+    t.equal(assert.isAssertMethod(assert.CustomMessage), undefined,
+            'Test isAssertMethod with method from assert module, that not is assertion');
+    t.equal(assert.isAssertMethod(function() {}), undefined,
+            'Test isAssertionMethod with function, that not is assert method');
+    t.throws(assert.isAssertMethod.bind(null, 'asd'),
+            /^Error: fn must be a function!/, 'test isAssertionMethod with non-function argument');
+});

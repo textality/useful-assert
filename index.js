@@ -24,6 +24,7 @@ assert.isParent = isParent;
 assert.isparent = isParent;
 assert.any = any;
 assert.CustomMessage = CustomMessage;
+assert.isAssertMethod = isAssertMethod;
 
 // sign, to mark assert methods
 var _SIGN = Math.random().toString() + Date.now().toString();
@@ -77,7 +78,7 @@ function _isBound(fn) {
     return !('prototype' in fn);
 }
 
-function _isAssertMethod(fn) {
+function isAssertMethod(fn) {
     if (typeof fn != 'function') throw new Error('fn must be a function!');
     if (fn[_SIGN]) return true;
 }
@@ -250,7 +251,7 @@ function any(assertMethod, arg, customMessage) {
     if (arguments.length == 0) throw new Error(
             'Missing required argument: assert method');
     if (typeof arguments[0] != 'function' ||
-        !_isAssertMethod(arguments[0])) throw new Error(
+        !isAssertMethod(arguments[0])) throw new Error(
             'First argument must be a one of assert methods');
     var assertions = [];
     var args = [];
@@ -259,7 +260,7 @@ function any(assertMethod, arg, customMessage) {
     var msg;
     for (var i=0; i < arguments.length; i++) {
         var a = arguments[i];
-        if (typeof a == 'function' && _isAssertMethod(a)) {
+        if (typeof a == 'function' && isAssertMethod(a)) {
             assertions.push(a);
             if (!(unbound || _isBound(a))) unbound = true;
         } else if(a instanceof CustomMessage) {

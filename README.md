@@ -112,6 +112,15 @@ assert.any(assert.num, assert.str.none.bind(null, '', 'Custom message'), false);
 // custom assertion error message
 assert.true(false, 'Custom message'); // Throws AssertionError: Custom message
 assert.isparent({}, {}, 'Custom message'); // Throws AssertionError: Custom message
+
+// assert.isAssertMethod
+assert.isAssertMethod(assert.ok); // true
+assert.isAssertMethod(assert.str); // true
+assert.isAssertMethod(assert.str.none); // true
+assert.isAssertMethod(assert.CustomMessage) // undefined
+assert.isAssertMethod(function foo() {}) // undefined
+assert.isAssertMethod('asd') // Throws Error: fn must be a function!
+
 ```
 
 ### license
