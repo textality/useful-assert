@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var bool = require('true-bool');
 
@@ -92,7 +94,7 @@ function string(v, msg, nonempty) {
         msg = msg ? msg : '\'\' is non-empty string';
     }
     if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: string});
 }
 
 function object(v, msg, nonempty) {
@@ -105,7 +107,7 @@ function object(v, msg, nonempty) {
         msg = msg ? msg : v + ' is non-empty object';
     }
     if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: object});
 }
 
 function array(v, msg, nonempty) {
@@ -117,7 +119,7 @@ function array(v, msg, nonempty) {
         msg = msg ? msg : v + ' is non-empty array';
     }
     if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: array});
 }
 
 function map(v, msg, nonempty) {
@@ -129,7 +131,7 @@ function map(v, msg, nonempty) {
         msg = msg ? msg : v + ' is non-empty map';
     }
     if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: map});
 }
 
 function set(v, msg, nonempty) {
@@ -141,7 +143,7 @@ function set(v, msg, nonempty) {
         msg = msg ? msg : v + ' is non-empty set';
     }
     if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: set});
 }
 
 function number(v, msg) {
@@ -152,7 +154,7 @@ function number(v, msg) {
         if (typeof v == 'string') v = '\'' + v + '\'';
         msg = msg ? msg : v + ' is number';
         throw new assert.AssertionError(
-                {message: msg, stackStartFunction: arguments.callee});
+                {message: msg, stackStartFunction: number});
     }
 }
 
@@ -165,7 +167,7 @@ function integer(v, msg) {
         if (typeof v == 'string') v = '\'' + v + '\'';
         msg = msg ? msg : v + ' is integer';
         throw new assert.AssertionError(
-                {message: msg, stackStartFunction: arguments.callee});
+                {message: msg, stackStartFunction: integer});
     }
 }
 
@@ -175,7 +177,7 @@ function undefined_(v, msg) {
     if (v !== undefined) {
       msg = msg ? msg : v + ' is undefined';
       throw new assert.AssertionError(
-          {message: msg, stackStartFunction: arguments.callee});
+          {message: msg, stackStartFunction: assert.undefined});
     }
 }
 
@@ -183,7 +185,7 @@ function true_(v, msg) {
     if (bool(v)) return;
     msg = msg ? msg : v + ' is true';
     throw new assert.AssertionError(
-        {message: msg, stackStartFunction: arguments.callee}); 
+        {message: msg, stackStartFunction: true}); 
 }
 
 function isParent(parent, obj, msg) {
@@ -222,7 +224,7 @@ function isParent(parent, obj, msg) {
         if (Object.prototype.isPrototypeOf.call(parent, obj)) return;
     }
     throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: isParent});
 }
 
 function CustomMessage(msg) {
@@ -288,5 +290,5 @@ function any(assertMethod, arg, customMessage) {
     }
     msg = msg ? msg : messages.join('; ');
     throw new assert.AssertionError(
-            {message: msg, stackStartFunction: arguments.callee});
+            {message: msg, stackStartFunction: any});
 }
