@@ -45,7 +45,7 @@ function _withoutConstructor(v) {
 
 function _nonempty(fn) {
     var noneFn = function(v, msg) {
-        return fn(v, msg, true);
+        return fn(v, msg, true, noneFn);
     };
     noneFn.bind = _customBind;
     noneFn[_SIGN] = true;
@@ -80,12 +80,22 @@ function _isBound(fn) {
     return !('prototype' in fn);
 }
 
+function _throw(fail, method, msg, stackStartFn) {
+    if (typeof method != 'function') throw new Error('method must be a function!');
+    if (fail && typeof msg != 'string') throw new Error('msg must be a string!');
+    if (fail) {
+        stackStartFn = stackStartFn || method;
+        throw new assert.AssertionError(
+                {message: msg, stackStartFunction: stackStartFn});
+    }
+}
+
 function isAssertMethod(fn) {
     if (typeof fn != 'function') throw new Error('fn must be a function!');
     if (fn[_SIGN]) return true;
 }
 
-function string(v, msg, nonempty) {
+function string(v, msg, nonempty, stackStartFn) {
     if (typeof v != 'string') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty string' : v + ' is string';
@@ -93,11 +103,10 @@ function string(v, msg, nonempty) {
         fail = true;
         msg = msg ? msg : '\'\' is non-empty string';
     }
-    if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: string});
+    _throw(fail, string, msg, stackStartFn);
 }
 
-function object(v, msg, nonempty) {
+function object(v, msg, nonempty, stackStartFn) {
     if (_withoutConstructor(v) || v.constructor.name != 'Object') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty object' : v + ' is object';
@@ -106,11 +115,10 @@ function object(v, msg, nonempty) {
         fail = true;
         msg = msg ? msg : v + ' is non-empty object';
     }
-    if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: object});
+    _throw(fail, object, msg, stackStartFn);
 }
 
-function array(v, msg, nonempty) {
+function array(v, msg, nonempty, stackStartFn) {
     if (_withoutConstructor(v) || v.constructor.name != 'Array') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty array' : v + ' is array';
@@ -118,11 +126,10 @@ function array(v, msg, nonempty) {
         fail = v.length ? false : true;
         msg = msg ? msg : v + ' is non-empty array';
     }
-    if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: array});
+    _throw(fail, array, msg, stackStartFn);
 }
 
-function map(v, msg, nonempty) {
+function map(v, msg, nonempty, stackStartFn) {
     if (_withoutConstructor(v) || v.constructor.name != 'Map') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty map' : v + ' is map';
@@ -130,11 +137,10 @@ function map(v, msg, nonempty) {
         fail = v.size ? false : true;
         msg = msg ? msg : v + ' is non-empty map';
     }
-    if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: map});
+    _throw(fail, map, msg, stackStartFn);
 }
 
-function set(v, msg, nonempty) {
+function set(v, msg, nonempty, stackStartFn) {
     if (_withoutConstructor(v) || v.constructor.name != 'Set') {
         var fail = true;
         if (!msg) msg = nonempty ? v + ' is non-empty set' : v + ' is set';
@@ -142,8 +148,7 @@ function set(v, msg, nonempty) {
         fail = v.size ? false : true;
         msg = msg ? msg : v + ' is non-empty set';
     }
-    if (fail) throw new assert.AssertionError(
-            {message: msg, stackStartFunction: set});
+    _throw(fail, set, msg, stackStartFn);
 }
 
 function number(v, msg) {
