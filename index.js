@@ -27,6 +27,8 @@ assert.isparent = isParent;
 assert.any = any;
 assert.CustomMessage = CustomMessage;
 assert.isAssertMethod = isAssertMethod;
+assert.function = isFunction;
+assert.fn = isFunction;
 
 // sign, to mark assert methods
 var _SIGN = Math.random().toString() + Date.now().toString();
@@ -173,6 +175,14 @@ function integer(v, msg) {
         msg = msg ? msg : v + ' is integer';
         throw new assert.AssertionError(
                 {message: msg, stackStartFunction: integer});
+    }
+}
+
+function isFunction(v, msg) {
+    if (typeof v != 'function') {
+        msg = msg ? msg : v + ' is function';
+        throw new assert.AssertionError(
+                {message: msg, stackStartFunction: isFunction});
     }
 }
 

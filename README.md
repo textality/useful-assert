@@ -27,6 +27,7 @@ Note: native methods also available
 * *assert.undefined*
 * *assert.true*
 * *assert.isParent*
+* *assert.function*
 
 ### shortcuts
 * *assert.str*
@@ -44,6 +45,7 @@ Note: native methods also available
 * *assert.undef*
 * *assert.true*
 * *assert.isparent*
+* *assert.fn*
 
 ### example
 ```javascript

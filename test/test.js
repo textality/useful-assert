@@ -11,6 +11,7 @@ var int = assert.int;
 var undef = assert.undef;
 var isparent = assert.isparent;
 var any = assert.any;
+var fn = assert.fn;
 
 test('Test assert.str', function(t) {
     t.plan(9);
@@ -242,4 +243,12 @@ test('Test assert.isAssertMethod', function(t) {
             'Test isAssertionMethod with function, that not is assert method');
     t.throws(assert.isAssertMethod.bind(null, 'asd'),
             /^Error: fn must be a function!/, 'test isAssertionMethod with non-function argument');
+});
+
+test('Test assert.fn', function(t) {
+    t.plan(11);
+    t.throws(fn, /^AssertionError: undefined is function/, 'throws ..undefined is function');
+    t.throws(fn.bind(null, 'asd'), /^AssertionError: \'asd\' is function/, 'throws ..\'asd\' is function');
+    t.equal(fn(()=> null), undefined, 'function is function');
+    t.throws(fn.bind(null, 'asd', 'Custom message'), /^AssertionError: Custom message/);
 });
