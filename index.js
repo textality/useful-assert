@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var bool = require('true-bool');
+var isBool = require('true-bool');
 
 module.exports = assert;
 
@@ -29,6 +29,8 @@ assert.CustomMessage = CustomMessage;
 assert.isAssertMethod = isAssertMethod;
 assert.function = isFunction;
 assert.fn = isFunction;
+assert.boolean = bool;
+assert.bool = bool;
 
 // sign, to mark assert methods
 var _SIGN = Math.random().toString() + Date.now().toString();
@@ -38,6 +40,23 @@ object.none = object.nonempty = _nonempty(object);
 array.none = array.nonempty = _nonempty(array);
 map.none = map.nonempty = _nonempty(map);
 set.none = set.nonempty = _nonempty(set);
+
+assert.ostr = assert.any.bind(null, assert.undef, assert.str);
+assert.ostrn = assert.any.bind(null, assert.undef, assert.str.none);
+assert.oobj = assert.any.bind(null, assert.undef, assert.obj);
+assert.oobjn = assert.any.bind(null, assert.undef, assert.obj.none);
+assert.oarr = assert.any.bind(null, assert.undef, assert.arr);
+assert.oarrn = assert.any.bind(null, assert.undef, assert.arr.none);
+assert.omap = assert.any.bind(null, assert.undef, assert.map);
+assert.omapn = assert.any.bind(null, assert.undef, assert.map.none);
+assert.oset = assert.any.bind(null, assert.undef, assert.set);
+assert.osetn = assert.any.bind(null, assert.undef, assert.set.none);
+assert.onum = assert.any.bind(null, assert.undef, assert.num);
+assert.oint = assert.any.bind(null, assert.undef, assert.int);
+assert.otrue = assert.any.bind(null, assert.undef, assert.true);
+assert.oisparent = assert.any.bind(null, assert.undef, assert.isparent);
+assert.ofn = assert.any.bind(null, assert.undef, assert.fn);
+assert.obool = assert.any.bind(null, assert.undef, assert.bool);
 
 _markAssertMethods();
 
@@ -106,6 +125,14 @@ function string(v, msg, nonempty, stackStartFn) {
         msg = msg ? msg : '\'\' is non-empty string';
     }
     _throw(fail, string, msg, stackStartFn);
+}
+
+function bool(v, msg, stackStartFn) {
+    if (typeof v != 'boolean') {
+        var fail = true;
+        msg = msg || v + ' is boolean';
+    }
+    _throw(fail, bool, msg, stackStartFn);
 }
 
 function object(v, msg, nonempty, stackStartFn) {
@@ -197,7 +224,7 @@ function undefined_(v, msg) {
 }
 
 function true_(v, msg) {
-    if (bool(v)) return;
+    if (isBool(v)) return;
     msg = msg ? msg : v + ' is true';
     throw new assert.AssertionError(
         {message: msg, stackStartFunction: true}); 

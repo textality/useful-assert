@@ -28,6 +28,23 @@ Note: native methods also available
 * *assert.true*
 * *assert.isParent*
 * *assert.function*
+* *assert.boolean*
+* *assert.ostr* - Optional string (string or undefined)
+* *assert.ostrn* - Optional non-empty string
+* *assert.oobj* - Optional object (object or undefined)
+* *assert.oobjn* - Optional non-empty object
+* *assert.oarr* - Optional array (array or undefined)
+* *assert.oarrn* - Optional non-empty array
+* *assert.omap* - Optional map (map or undefined)
+* *assert.omapn* - Optional non-empty map
+* *assert.oset* - Optional set (set or undefined)
+* *assert.osetn* - Optional non-empty set
+* *assert.onum* - Optional number (number or undefined)
+* *assert.oint* - Optional int (int or undefined)
+* *assert.otrue* - Optional true value (true value or undefined)
+* *assert.oisparent* - Optional isparent
+* *assert.ofn* - Optional function (function or undefined)
+* *assert.obool* - Optional boolean (boolean or undefined)
 
 ### shortcuts
 * *assert.str*
@@ -46,6 +63,7 @@ Note: native methods also available
 * *assert.true*
 * *assert.isparent*
 * *assert.fn*
+* *assert.bool*
 
 ### example
 ```javascript
